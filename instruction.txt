@@ -1,3 +1,4 @@
 1. go to extensions in vs code and download ES7 + react/...
 2.open terminal type -     cd client
 3. type -  npm run dev
+4. open client folder in terminal and type npm install react-hook-form
