@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import {Toaster} from "sonner";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
