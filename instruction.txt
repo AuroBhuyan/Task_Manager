@@ -2,3 +2,4 @@
 2.open terminal type -     cd client
 3. type -  npm run dev
 4. open client folder in terminal and type npm install react-hook-form
+5. timestamp: 30:00
