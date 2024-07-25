@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {Toaster} from "sonner";
@@ -8,6 +9,7 @@ import Trash from "./pages/Trash";
 import Users from "./pages/Users";
 import Tasks from "./pages/Tasks";
 import Navbar from "./components/Navbar";
+import { setOpenSidebar } from "./redux/slices/authSlice";
 import Sidebar from "./components/Sidebar";
 function Layout() {
   const { user } = useSelector((state) => state.auth);
