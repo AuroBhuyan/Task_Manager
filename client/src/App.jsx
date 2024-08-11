@@ -1,4 +1,4 @@
-import {userSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import {Toaster} from "sonner";
 import Login from "./pages/Login";
