@@ -7,6 +7,7 @@ import Tasks from "./pages/Tasks";
 import Trash from "./pages/Trash";
 import Users from "./pages/Users";
 import Dashboard from "./pages/Dashboard";
+import Sidebar from "./components/Sidebar";
 
 
 function Layout (){
@@ -16,7 +17,7 @@ function Layout (){
    return user ? (
       <div className="w-full h-screen flex-col md:flex-row">
         <div className="w-1/5 h-screen bg-white sticky top-0 hidden md:block">
-           <Sidebar />
+          <Sidebar />
         </div>
         {/* <MobileSidebar /> */}
         <div className="flex-1 overflow-y-auto">
@@ -34,7 +35,7 @@ function App() {
   return( 
     <main className='w-full min-h-screen bg-[#f3f4f6]'>
       <Routes>
-        <Route element={<layout />}>
+        <Route element={<Layout />}>
           <Route index path="/" element={<Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path='/tasks' element={<Tasks />} />
