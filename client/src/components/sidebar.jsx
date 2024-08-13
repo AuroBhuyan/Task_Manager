@@ -51,7 +51,7 @@ const linkData = [
   },
 ];
 
-const sidebar = () => {
+const Sidebar = () => {
     const { user } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
@@ -104,4 +104,4 @@ const sidebar = () => {
       );
 }
 
-export default sidebar;
+export default Sidebar;
