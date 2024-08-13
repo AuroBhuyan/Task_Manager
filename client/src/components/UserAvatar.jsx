@@ -29,7 +29,7 @@ const UserAvatar = () => {
             </Menu.Button>
           </div>
 
-          <transition
+          <Transition
             as={Fragment}
             enter-active-class="transition duration-100 ease-out"
             enter-from-class="transform scale-95 opacity-0"
@@ -77,7 +77,7 @@ const UserAvatar = () => {
                 </Menu.Item>
               </div>
             </Menu.Items>
-        </transition>
+        </Transition>
         </Menu>
       </div>
     </>  

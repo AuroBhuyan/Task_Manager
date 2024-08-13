@@ -56,7 +56,7 @@ const NotificationPanel = () => {
  
 
 
-  
+
   const readHandler = () => {};
   const viewHandler = () => {};
 
