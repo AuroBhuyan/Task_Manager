@@ -208,12 +208,12 @@ const Dashboard = () => {
         <h4 className='text-xl text-gray-600 font-semibold'>
           Chart by Priority
         </h4>
-        <Chart />
+        <Chart data={data?.graphData} />
       </div>
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
         {/* /left */}
 
-        <TaskTable tasks={summary.last10Task} />
+        <TaskTable tasks={data?.last10Task} />
 
         {/* /right */}
 

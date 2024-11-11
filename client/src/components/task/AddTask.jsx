@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import ModalWrapper from "../ModalWrapper";
 import { Dialog } from "@headlessui/react";
@@ -8,14 +7,15 @@ import UserList from "./UserList";
 import SelectList from "../SelectList";
 import { BiImages } from "react-icons/bi";
 import Button from "../Button";
-
+import {getStorage, ref, getDownloadURL, uploadBytesResumable} from "firebase/storage"
+import {app} from "../../firebase"
+import { useCreateTaskMutation } from "../../redux/slices/api/taskApiSlice";
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
 const uploadedFileURLs = [];
 
-const AddTask = ({ open, setOpen }) => {
-  const task = "";
+const AddTask = ({ open, setOpen, task}) => {
 
   const {
     register,
@@ -30,11 +30,58 @@ const AddTask = ({ open, setOpen }) => {
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const submitHandler = () => {};
+  const[createTask, { isLoading }] = useCreateTaskMutation();
+  const[updatingTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
+  const URLS = task?.assets ? [...task.assets] : [];
+
+  const submitHandler = async(data) => {
+    for(const file of assets) {
+      setUploading(true);
+      try{
+        await uploadFile(file);
+      }
+        catch(error) {
+          console.error("Error uploading file:", error.message);
+          return;
+        } finally{
+          setUploading(false);
+        }
+      }
+  };
 
   const handleSelect = (e) => {
     setAssets(e.target.files);
   };
+
+  const uploadFile = async (file) => {
+    const storage = getStorage(app);
+    
+    const name= new Date().getTime() + file.name;
+    const storageRef= ref(storage, name);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise((resolve, reject)) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          console.log("Uploading");
+        },
+        (error) => {
+          reject(error);
+        },
+        ()=> {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              uploadedFileURLs.push(downloadURL);
+              resolve();
+          });
+            .catch((error)=> {
+              reject(error);
+          });
+        }
+      )
+    }
+  }
 
   return (
     <>
