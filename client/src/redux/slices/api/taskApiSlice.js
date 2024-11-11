@@ -1,4 +1,5 @@
 import { apiSlice } from "../apiSlice";
+import { apiSlice } from "../apiSlice";
 
 const TASKS_URL = "/task";
 
@@ -31,6 +32,7 @@ export const taskApiSlice = apiSlice.injectEndpoints({
 
         duplicateTask: builder.mutation({
             query: (id) => ({
+                url: `${TASKS_URL}/duplicate/${id}`,
                 url: `${TASKS_URL}/duplicate/${id}`,
                 method: "POST",
                 body: {},

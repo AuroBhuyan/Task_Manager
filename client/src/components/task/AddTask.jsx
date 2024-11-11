@@ -16,12 +16,25 @@ import {
 import { app } from "../../utils/firebase";
 import { useCreateTaskMutation, useUpdateTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { toast } from "sonner";
-
+import { dateFormatter } from "../../utils";
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
-const AddTask = ({ open, setOpen, task }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+const AddTask = ({ open, setOpen, task}) => {
+  const defaultValues = {
+    title: task?.title || "",
+    date: dateFormatter(task?.date || new Date()),
+    team: [],
+    stage: "",
+    priority: "",
+    assets: [],
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [team, setTeam] = useState(task?.team || []);
   const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
   const [priority, setPriority] = useState(
@@ -101,6 +114,9 @@ const AddTask = ({ open, setOpen, task }) => {
               reject(error);
             });
         }
+      );
+    });
+  };
       );
     });
   };
