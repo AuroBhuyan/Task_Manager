@@ -11,6 +11,7 @@ import AddTask from "./AddTask";
 import AddSubTask from "./AddSubTask";
 import ConfirmationDialog from "../Dialogs";
 import { useDuplicateTaskMutation, useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import {toast} from "sonner";
 
 const TaskDialog = ({ task }) => {
   const [open, setOpen] = useState(false);
