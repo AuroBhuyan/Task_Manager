@@ -7,6 +7,9 @@ import { getInitials } from "../utils";
 import clsx from "clsx";
 import ConfirmationDialog, { UserAction } from "../components/Dialogs";
 import AddUser from "../components/AddUser";
+import { useDeleteUserMutation, useGetTeamListQuery, useUserActionMutation } from "../redux/slices/api/userApiSLice";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Users = () => {
@@ -15,8 +18,48 @@ const Users = () => {
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const userActionHandler = () => {};
-  const deleteHandler = () => {};
+  const { data , isLoading} = useGetTeamListQuery();
+  const [deleteUser] = useDeleteUserMutation();
+  const [userAction] = useUserActionMutation();
+
+
+  const userActionHandler = async() => {
+    try {
+      const result = await userAction({
+        isActive: !selected?.isActive,
+        id: selected?._id,
+      });
+
+      refeched();
+      toast.success(result.message.data);
+      setSelected(null);
+      setTimeout(()=> {
+        setOpenAction(false);
+      }, 500);
+    }
+     catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message || error.error);
+    }
+  };
+
+
+  const deleteHandler = async() => {
+    try {
+      const result =  await deleteUser(selected);
+
+refeched();
+toast.success(result.message.data);
+setSelected(null);
+setTimeout(()=> {
+  setOpenDialog(false);
+}, 500); 
+
+    } catch (error) {
+      console.log(err);
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
   const deleteClick = (id) => {
     setSelected(id);
@@ -28,6 +71,11 @@ const Users = () => {
     setOpen(true);
   };
 
+  const userStatusClick = (el) => {
+    setSelected(el);
+    setOpen(true);
+
+  }
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
@@ -59,7 +107,7 @@ const Users = () => {
 
       <td>
         <button
-          // onClick={() => userStatusClick(user)}
+          onClick={() => userStatusClick(user)}
           className={clsx(
             "w-fit px-4 py-1 rounded-full",
             user?.isActive ? "bg-blue-200" : "bg-yellow-100"
@@ -74,14 +122,14 @@ const Users = () => {
           className='text-blue-600 hover:text-blue-500 font-semibold sm:px-0'
           label='Edit'
           type='button'
-         // onClick={() => editClick(user)}
+         onClick={() => editClick(user)}
         />
 
         <Button
           className='text-red-700 hover:text-red-500 font-semibold sm:px-0'
           label='Delete'
           type='button'
-          //onClick={() => deleteClick(user?._id)}
+          onClick={() => deleteClick(user?._id)}
         />
       </td>
     </tr>
@@ -105,7 +153,7 @@ const Users = () => {
             <table className='w-full mb-5'>
               <TableHeader />
               <tbody>
-                {summary.users?.map((user, index) => (
+                {data?.map((user, index) => (
                   <TableRow key={index} user={user} />
                 ))}
               </tbody>
