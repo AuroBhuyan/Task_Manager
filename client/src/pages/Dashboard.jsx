@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   MdAdminPanelSettings,
   MdKeyboardArrowDown,
@@ -90,6 +90,7 @@ const TaskTable = ({ tasks }) => {
     </>
   );
 };
+
 const UserTable = ({ users }) => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
@@ -142,8 +143,23 @@ const UserTable = ({ users }) => {
     </div>
   );
 };
+
 const Dashboard = () => {
- const totals=summary.tasks;
+  const [data, setData] = useState({
+    graphData: [],
+    last10Task: [],
+  });
+
+  useEffect(() => {
+    // You can replace this with fetching data from an API or other sources.
+    const fetchedData = {
+      graphData: summary.graphData || [], // Example data
+      last10Task: summary.last10Task || [], // Example data
+    };
+    setData(fetchedData);
+  }, []);
+
+  const totals = summary.tasks;
 
   const stats = [
     {
@@ -170,9 +186,9 @@ const Dashboard = () => {
     {
       _id: "4",
       label: "TODOS",
-      total: totals["todo"],
+      total: totals["todo"] || 0,
       icon: <FaArrowsToDot />,
-      bg: "bg-[#be185d]" || 0,
+      bg: "bg-[#be185d]",
     },
   ];
 
@@ -196,6 +212,7 @@ const Dashboard = () => {
       </div>
     );
   };
+
   return (
     <div className='h-full py-4'>
       <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
@@ -208,20 +225,15 @@ const Dashboard = () => {
         <h4 className='text-xl text-gray-600 font-semibold'>
           Chart by Priority
         </h4>
-        <Chart data={data?.graphData} />
+        <Chart data={data.graphData} />
       </div>
+
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
-        {/* /left */}
-
-        <TaskTable tasks={data?.last10Task} />
-
-        {/* /right */}
-
+        <TaskTable tasks={data.last10Task} />
         <UserTable users={summary.users} />
       </div>
-    </div>  
-
-    
+    </div>
   );
-        };
+};
+
 export default Dashboard;
