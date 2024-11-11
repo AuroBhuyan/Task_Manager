@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { BiMessageAltDetail } from "react-icons/bi";
 import {
+  MdAddTask,
   MdAttachFile,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
@@ -24,13 +25,36 @@ const ICONS = {
 const Table = ({ tasks }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [openEdit, setOpenEdit] = useState(false);
 
+  const [trashTask]= useTrashTaskMutation()
   const deleteClicks = (id) => {
     setSelected(id);
     setOpenDialog(true);
   };
 
-  const deleteHandler = () => {};
+  const editTaskHandler= (el) => {
+    setSelected(el);
+    setOpenEdit(true);
+  }
+
+  const deleteHandler = async() => {
+    try{
+      const result= await trashTask({
+        id: selected,
+        isTrash:"trash",
+      }).unwrap();
+      toast.success(result?.message);
+
+      setTimeout(() => {
+        setOpenDialog(false);
+        window.location.reload();
+      }, 500)
+    } catch (error) {
+      console.log(err);
+      toast.error(err?.data?.message || err.error)
+    }
+  };
 
   const TableHeader = () => (
     <thead className='w-full border-b border-gray-300'>
@@ -112,6 +136,7 @@ const Table = ({ tasks }) => {
           className='text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base'
           label='Edit'
           type='button'
+          onClick={() => deleteClicks(task.id)}
         />
 
         <Button
@@ -143,6 +168,13 @@ const Table = ({ tasks }) => {
         open={openDialog}
         setOpen={setOpenDialog}
         onClick={deleteHandler}
+      />
+
+      <AddTask
+        open={openEdit}
+        setOpen={setOpenEdit}
+        task={selected}
+        key={new Date().getTime()}
       />
     </>
   );

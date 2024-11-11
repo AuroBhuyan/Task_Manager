@@ -8,7 +8,7 @@ import { getInitials } from "../../utils";
 import { MdCheck } from "react-icons/md";
 
 const UserList = ({ setTeam, team }) => {
-  const data = summary.users;
+  const {data, isLoading} = summary.useGetListQuery();
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const handleChange = (el) => {
@@ -21,7 +21,7 @@ const UserList = ({ setTeam, team }) => {
     } else {
       setSelectedUsers(team);
     }
-  }, []);
+  }, [isLoading]);
 
   return (
     <div>
