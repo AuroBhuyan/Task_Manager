@@ -15,6 +15,8 @@ import { FaList } from "react-icons/fa";
 import UserInfo from "../UserInfo";
 import Button from "../Button";
 import ConfirmationDialog from "../Dialogs";
+import { useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import AddTask from "./AddTask";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,

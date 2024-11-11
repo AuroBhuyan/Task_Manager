@@ -19,6 +19,8 @@ import Tabs from "../components/Tabs";
 import { PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import Loading from "../components/Loader";
 import Button from "../components/Button";
+import { useGetSingleTaskQuery } from "../redux/slices/api/taskApiSlice";
+import { usePostTaskActivitiesMutation } from "../redux/slices/api/taskApiSlice";
 
 const assets = [
   "https://images.pexels.com/photos/2418664/pexels-photo-2418664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
@@ -229,7 +231,7 @@ if(isLoading){
           </>
         ) : (
           <>
-            <Activities activity={data?.activities} id={id} refetch={refetch}/>
+            <Activities activity={data?.task?.activities} id={id} refetch={refetch}/>
           </>
         )}
       </Tabs>
