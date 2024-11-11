@@ -15,6 +15,8 @@ import AddUser from "../components/AddUser";
 import ConfirmatioDialog from "../components/Dialogs";
 import { useDeleteRestoreTaskMutation } from "../redux/slices/api/taskApiSlice";
 import { toast } from "sonner";
+import { useGetAllTasksQuery } from "../redux/slices/api/taskApiSlice";
+import Loading from "../components/Loader";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
