@@ -24,3 +24,4 @@ export const Chart = ({ data }) => {
     </ResponsiveContainer>
   );
 };
+ 
