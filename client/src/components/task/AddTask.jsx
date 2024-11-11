@@ -103,9 +103,9 @@ const AddTask = ({ open, setOpen, task}) => {
               reject(error);
           });
         }
-      )
-    }
-  }
+      );
+    });
+  };
 
   return (
     <>
