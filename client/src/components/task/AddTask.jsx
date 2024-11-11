@@ -11,12 +11,21 @@ import {getStorage, ref, getDownloadURL, uploadBytesResumable} from "firebase/st
 import {app} from "../../firebase"
 import { useCreateTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { toast } from "sonner";
+import { dateFormatter } from "../../utils";
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
 const uploadedFileURLs = [];
 
 const AddTask = ({ open, setOpen, task}) => {
+  const defaultValues = {
+    title: task?.title || "",
+    date: dateFormatter(task?.date || new Date()),
+    team: [],
+    stage: "",
+    priority: "",
+    assets: [],
+  }
 
   const {
     register,

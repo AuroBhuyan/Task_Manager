@@ -53,5 +53,6 @@ export const { useGetDashbpardStatQuery,
                 useGetAllTaskQuery,
                 useCreateTaskMutation,
                 useDuplicateTaskMutation,
-                useUpdateTaskMutation
+                useUpdateTaskMutation,
+                useTrashTaskMutation
                  } = taskApiSlice;
