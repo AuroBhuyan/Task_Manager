@@ -10,6 +10,7 @@ import Button from "../Button";
 import {getStorage, ref, getDownloadURL, uploadBytesResumable} from "firebase/storage"
 import {app} from "../../firebase"
 import { useCreateTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import { toast } from "sonner";
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
@@ -47,6 +48,29 @@ const AddTask = ({ open, setOpen, task}) => {
           setUploading(false);
         }
       }
+
+      try{
+        const newData = {
+          ...data,
+          assets: [...URLS, ...uploadedFileURLs],
+          team,
+          stage,
+          priority,
+        };
+
+        const res = task?._id
+        ? await useUpdateTaskMutation({ ...newData, _id: task._id}).unwarap()
+        : await createTask(newData).unwarap();
+      
+      toast.success(res.message);
+
+      setTimeout(() => {
+        setOpen(false);
+      }, 500);
+    } catch(err) {
+      console.log(err);
+      toast.error(err?.data?.message || err.message);
+    }
   };
 
   const handleSelect = (e) => {
