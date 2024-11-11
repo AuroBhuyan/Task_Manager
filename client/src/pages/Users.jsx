@@ -18,7 +18,7 @@ const Users = () => {
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const { data , isLoading} = useGetTeamListQuery();
+  const { data , isLoading , refetch} = useGetTeamListQuery();
   const [deleteUser] = useDeleteUserMutation();
   const [userAction] = useUserActionMutation();
 
@@ -30,7 +30,7 @@ const Users = () => {
         id: selected?._id,
       });
 
-      refeched();
+      refetch();
       toast.success(result.message.data);
       setSelected(null);
       setTimeout(()=> {
@@ -48,8 +48,8 @@ const Users = () => {
     try {
       const result =  await deleteUser(selected);
 
-refeched();
-toast.success(result.message.data);
+refetch();
+toast.success("Deleted successfully");
 setSelected(null);
 setTimeout(()=> {
   setOpenDialog(false);
@@ -73,7 +73,7 @@ setTimeout(()=> {
 
   const userStatusClick = (el) => {
     setSelected(el);
-    setOpen(true);
+    setOpenAction(true);
 
   }
   const TableHeader = () => (
