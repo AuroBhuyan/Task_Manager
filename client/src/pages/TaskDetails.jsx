@@ -88,9 +88,18 @@ const act_types = [
 
 const TaskDetails = () => {
   const { id } = useParams();
+  const {data,isLoading,refetch} = useGetSingleTaskQuery(id);
 
   const [selected, setSelected] = useState(0);
-  const task = tasks[3];
+  const task = data?.task;
+
+if(isLoading){
+  return(
+    <div className='py-10'>
+      <Loading/>
+    </div>
+  )
+}
 
   return (
     <div className='w-full flex flex-col gap-3 mb-4 overflow-y-hidden'>
@@ -220,7 +229,7 @@ const TaskDetails = () => {
           </>
         ) : (
           <>
-            <Activities activity={task?.activities} id={id} />
+            <Activities activity={data?.activities} id={id} refetch={refetch}/>
           </>
         )}
       </Tabs>
@@ -228,12 +237,31 @@ const TaskDetails = () => {
   );
 };
 
-const Activities = ({ activity, id }) => {
+const Activities = ({ activity, id ,refetch}) => {
   const [selected, setSelected] = useState(act_types[0]);
   const [text, setText] = useState("");
-  const isLoading = false;
 
-  const handleSubmit = async () => {};
+  const [ postActivity, {isLoading}] = usePostTaskActivityMutation();
+
+  const handleSubmit = async () => {
+    try {
+      const activityData={
+        type: selected?.toLowerCase(),
+        activity:text, 
+      }
+      const result = await postActivity({
+        data: activityData,
+        id
+      }).unwrap();
+
+      setText("");
+      toast.success(result?.message);
+      refetch();
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
   const Card = ({ item }) => {
     return (
@@ -269,7 +297,7 @@ const Activities = ({ activity, id }) => {
             <Card
               key={index}
               item={el}
-              isConnected={index < activity.length - 1}
+              isConnected={index < activity?.length - 1}
             />
           ))}
         </div>
